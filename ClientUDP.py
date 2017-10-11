@@ -14,11 +14,25 @@ trame=bytearray([idTrame,tailleTrame,orientationSafran,orientationGv])          
 sock = socket.socket(socket.AF_INET, socket.SOCK_DGRAM) 
 sock.sendto(trame,(ip,port))
 
-while True:
-    data,addr=sock.recvfrom(1024)
-    print 'ID de trame :', ord(data[0])
-    print 'Taille de la trame :', ord(data[1])
-    print 'Vitesse du vent :', ord(data[2])
-    print 'Direction du vent :',ord(data[3]),'°'
-    print 'Gite :',ord(data[4]),'°'
+data,addr=sock.recvfrom(1024)
+
+b3=float (ord(data[5])<<24)
+b2=b3+(ord(data[6])<<16)
+b1=b2+(ord(data[7])<<8)
+b0=b1+(ord(data[8]))
+lat=(b0/10000)
+
+c3=float (ord(data[9])<<24)
+c2=c3+(ord(data[10])<<16)
+c1=c2+(ord(data[11])<<8)
+c0=c1+(ord(data[12]))
+lon=(c0/10000)
+
+print 'ID de trame :', ord(data[0])
+print 'Taille de la trame :', ord(data[1])
+print 'Vitesse du vent :', ord(data[2])
+print 'Direction du vent :',ord(data[3]),'°'
+print 'Gite :',ord(data[4]),'°'
+print 'latitude :',lat
+print 'longitude :',lon
 
